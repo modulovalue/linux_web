@@ -57,6 +57,7 @@ function initEmulator() {
         let terminalOutput = '';
         let checkCount = 0;
         let resolved = false;
+        let sentInitialEnter = false;
 
         // Listen for serial output to detect shell prompt
         emulator.add_listener('serial0-output-byte', (byte) => {
@@ -75,11 +76,16 @@ function initEmulator() {
             }
         });
 
-        // Update status with elapsed time
+        // Update status with elapsed time and send initial Enter to trigger prompt
         const statusUpdate = setInterval(() => {
             checkCount++;
             if (!resolved) {
                 updateStatus(`Booting Linux... (${checkCount}s)`, 'loading');
+                // After 5 seconds, start sending Enter keys to trigger the prompt
+                if (checkCount >= 5 && !sentInitialEnter) {
+                    sentInitialEnter = true;
+                    emulator.keyboard_send_scancodes([0x1C, 0x9C]); // Enter key
+                }
             } else {
                 clearInterval(statusUpdate);
             }
