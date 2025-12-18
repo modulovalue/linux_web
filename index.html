@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Linux WASM + Monaco Editor</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="header">
+        <h1>Linux WASM Shell Runner</h1>
+        <div class="controls">
+            <button id="runBtn" class="btn btn-primary" disabled>
+                <span class="btn-icon">▶</span> Run Script
+            </button>
+            <button id="clearBtn" class="btn btn-secondary">
+                <span class="btn-icon">⌫</span> Clear
+            </button>
+            <span id="status" class="status">Initializing...</span>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="panel editor-panel">
+            <div class="panel-header">
+                <span>Bash Script Editor</span>
+            </div>
+            <div id="editor"></div>
+        </div>
+
+        <div class="panel terminal-panel">
+            <div class="panel-header">
+                <span>Linux Terminal Output</span>
+            </div>
+            <div id="screen_container">
+                <div style="white-space: pre; font: 14px monospace; line-height: 14px"></div>
+                <canvas style="display: none"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <!-- Monaco Editor -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.45.0/min/vs/loader.min.js"></script>
+
+    <!-- v86 Emulator -->
+    <script src="libv86.js"></script>
+
+    <script src="app.js"></script>
+</body>
+</html>
