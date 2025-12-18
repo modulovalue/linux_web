@@ -33,7 +33,7 @@ A browser-based Linux environment powered by [v86](https://github.com/copy/v86) 
 
 3. Open http://localhost:8888 in your browser
 
-4. Wait ~30-45 seconds for Linux to boot
+4. Wait for Linux to boot (the button will enable when ready)
 
 **Note:** The included `serve.py` is required because v86 needs `Cross-Origin-Opener-Policy` and `Cross-Origin-Embedder-Policy` headers for SharedArrayBuffer support. A standard HTTP server won't work.
 
@@ -43,20 +43,6 @@ A browser-based Linux environment powered by [v86](https://github.com/copy/v86) 
 2. Click "Run Script" or press `Ctrl+Enter` / `Cmd+Enter`
 3. View the output in the terminal on the right
 4. Use "Clear" to clear the terminal output
-
-## Files
-
-| File | Description |
-|------|-------------|
-| `index.html` | Main HTML page |
-| `app.js` | Application logic (Monaco + v86 integration) |
-| `styles.css` | Styling |
-| `serve.py` | Development server with required CORS headers |
-| `libv86.js` | v86 emulator library |
-| `v86.wasm` | v86 WebAssembly binary |
-| `linux4.iso` | Linux ISO image |
-| `seabios.bin` | SeaBIOS firmware |
-| `vgabios.bin` | VGA BIOS firmware |
 
 ## License
 
