@@ -40,7 +40,7 @@ function initMonaco() {
 
 // Initialize v86 emulator with 9p filesystem
 function initEmulator() {
-    updateStatus('Booting Linux (~30-45s)...', 'loading');
+    updateStatus('Booting Linux...', 'loading');
 
     emulator = new V86({
         wasm_path: "v86.wasm",
@@ -54,21 +54,34 @@ function initEmulator() {
     });
 
     return new Promise((resolve) => {
+        let terminalOutput = '';
         let checkCount = 0;
+        let resolved = false;
 
-        const bootCheck = setInterval(() => {
-            checkCount++;
-
-            if (emulator.is_running()) {
-                updateStatus(`Booting Linux... (${checkCount}s)`, 'loading');
+        // Listen for serial output to detect shell prompt
+        emulator.add_listener('serial0-output-byte', (byte) => {
+            terminalOutput += String.fromCharCode(byte);
+            // Keep buffer manageable
+            if (terminalOutput.length > 1000) {
+                terminalOutput = terminalOutput.slice(-500);
             }
-
-            if (checkCount >= 30) {
-                clearInterval(bootCheck);
+            // Detect shell prompt (e.g., "~% " or "/ #")
+            if (!resolved && /[~\/][%#]\s*$/.test(terminalOutput)) {
+                resolved = true;
                 isReady = true;
                 updateStatus('Ready', 'ready');
                 document.getElementById('runBtn').disabled = false;
                 resolve();
+            }
+        });
+
+        // Update status with elapsed time
+        const statusUpdate = setInterval(() => {
+            checkCount++;
+            if (!resolved) {
+                updateStatus(`Booting Linux... (${checkCount}s)`, 'loading');
+            } else {
+                clearInterval(statusUpdate);
             }
         }, 1000);
     });
